@@ -159,6 +159,7 @@ def build_agent():
 
     llm = LLMClient(config.LLM_MODEL, config.OLLAMA_URL, temperature=config.LLM_TEMPERATURE,
                      timeout=config.LLM_TIMEOUT, num_ctx=config.LLM_NUM_CTX,
+                     keep_alive=config.LLM_KEEP_ALIVE,
                      log_file=config.LOG_DIR / "llm_exchanges.jsonl")
     sql_tool = SQLTool(config.DB_PATH, max_rows=config.SQL_MAX_ROWS)
     doc_tool = DocSearchTool(load_corpus(config.DOCS_DIR, config.CHUNK_SIZE,

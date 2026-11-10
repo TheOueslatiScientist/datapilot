@@ -21,7 +21,7 @@ class LLMClient:
 
     def __init__(self, model, base_url="http://localhost:11434", temperature=0.1,
                  timeout=120, max_retries=3, backoff_factor=1.0, num_ctx=8192,
-                 log_file=None):
+                 keep_alive="5m", log_file=None):
         self.model = model
         self.url = base_url.rstrip("/") + "/api/chat"
         self.base_url = base_url.rstrip("/")
@@ -30,6 +30,7 @@ class LLMClient:
         self.max_retries = max_retries
         self.backoff_factor = backoff_factor
         self.num_ctx = num_ctx
+        self.keep_alive = keep_alive
         self.log_file = Path(log_file) if log_file else None
         self.session = requests.Session()     # réutilise la connexion entre les appels
 
@@ -39,6 +40,7 @@ class LLMClient:
             "messages": messages,
             "stream": False,
             "options": {"temperature": self.temperature, "num_ctx": self.num_ctx},
+            "keep_alive": self.keep_alive,
         }
         if json_mode:
             payload["format"] = "json"
